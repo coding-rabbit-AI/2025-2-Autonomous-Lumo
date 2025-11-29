@@ -56,12 +56,12 @@ if __name__ == '__main__':
     ])
 
     dataset = SteeringDataset(LABELS_CSV, DATASET_DIR, transform)  # 데이터셋 로드
-    # 데이터셋을 학습/테스트 8:2로 분할
-    train_set, test_set = random_split(dataset, [int(0.8*len(dataset)), len(dataset)-int(0.8*len(dataset))])
+    # 데이터셋을 train/validation 8:2로 분할
+    train_set, valid_set = random_split(dataset, [int(0.8*len(dataset)), len(dataset)-int(0.8*len(dataset))])
 
     # 데이터 로더 생성
     train_loader = DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS, pin_memory=True)
-    test_loader = DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
+    valid_loader = DataLoader(valid_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')  # 학습 디바이스 설정
     model = SteeringModel().to(device)  # 모델 초기화 및 디바이스 할당
@@ -71,17 +71,17 @@ if __name__ == '__main__':
     save_dir = get_unique_train_folder()  # 고유 학습 결과 폴더 생성
     log_path = os.path.join(save_dir, 'log.csv')  # 로그 파일 경로 설정
     with open(log_path, 'w') as f:  # 로그 파일 초기화
-        f.write('epoch,train_loss,test_loss\n')  # 헤더 작성
+        f.write('epoch,train_loss,valid_loss\n')  # 헤더 작성
     best_loss = float('inf')  # 초기 최적 손실값 무한대
 
     # 학습 루프 시작
     for epoch in range(1, EPOCHS + 1):
         print(f"Epoch {epoch}/{EPOCHS}")  # 현재 에폭 출력
         train_loss = train(model, train_loader, optimizer, criterion, device)  # 학습 손실 계산
-        test_loss, preds, labels = evaluate(model, test_loader, criterion, device)  # 검증 손실 계산
-        print(f"Train Loss: {train_loss:.4f} | Test Loss: {test_loss:.4f}")  # 결과 출력
+        valid_loss, preds, labels = evaluate(model, valid_loader, criterion, device)  # 검증 손실 계산
+        print(f"Train Loss: {train_loss:.4f} | valid Loss: {valid_loss:.4f}")  # 결과 출력
         with open(log_path, 'a') as f:  # 로그 기록 추가
-            f.write(f"{epoch},{train_loss:.6f},{test_loss:.6f}\n")
+            f.write(f"{epoch},{train_loss:.6f},{valid_loss:.6f}\n")
 
         # 현재 체크포인트 저장 후 이전 체크포인트 제거
         ckpt_path = os.path.join(save_dir, f"checkpoint_epoch{epoch}.pth")
@@ -91,8 +91,8 @@ if __name__ == '__main__':
             if os.path.exists(prev_ckpt):
                 os.remove(prev_ckpt)  # 이전 체크포인트 삭제
 
-        if test_loss < best_loss:  # 새로운 최적 모델인 경우
-            best_loss = test_loss  # 최적 손실 갱신
+        if valid_loss < best_loss:  # 새로운 최적 모델인 경우
+            best_loss = valid_loss  # 최적 손실 갱신
             torch.save(model.state_dict(), os.path.join(save_dir, "best_model.pth"))  # 최적 모델 저장
 
         torch.save(model.state_dict(), os.path.join(save_dir, "last_model.pth"))  # 마지막 모델 저장
@@ -109,7 +109,7 @@ if __name__ == '__main__':
              label='Training Loss')                  # 라벨: Training Loss
     
     plt.plot(log_df['epoch'].to_numpy(),             # x축: epoch
-             log_df['test_loss'].to_numpy(),         # y축: 검증 손실
+             log_df['valid_loss'].to_numpy(),         # y축: 검증 손실
              label='Validation Loss', linestyle='--')# 라벨: Validation Loss (점선)
     
     plt.xlabel('Epoch')                              # x축 레이블

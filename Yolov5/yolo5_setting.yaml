@@ -1,0 +1,9 @@
+# 데이터 경로 (절대 경로 or 상대 경로)
+train: C:\Users\sungb\Documents\lumo\2025-2-Autonomous-Lumo\Yolov5\traffic_images\train\images
+val: C:\Users\sungb\Documents\lumo\2025-2-Autonomous-Lumo\Yolov5\traffic_images\val\images
+
+# 클래스 개수
+nc: 7
+
+# 클래스 이름 (아까 classes.txt 순서랑 똑같아야 함!)
+names: ['Person', 'Red Light', 'Green Light', 'Stop Sign', 'Speed Limit_40', 'Speed Limit_80','Yellow Light']
