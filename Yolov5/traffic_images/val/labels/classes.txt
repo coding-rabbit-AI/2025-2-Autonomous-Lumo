@@ -1,7 +1,0 @@
-Person
-Red Light
-Green Light
-Stop Sign
-Speed Limit_40
-Speed Limit_80
-Yellow Light
