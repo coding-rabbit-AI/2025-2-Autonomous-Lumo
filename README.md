@@ -4,7 +4,7 @@
 
 Yolov5n 결과는 Yolov5\yolov5_result\seed_1 안에 있습니다.
 
-
+```text
 2025-2-AUTONOMOUS-LUMO/
 │
 ├── 📜 drive_final.py          # [메인] 자율주행 통합 실행 코드
@@ -25,3 +25,4 @@ Yolov5n 결과는 Yolov5\yolov5_result\seed_1 안에 있습니다.
     ├── yolo_train_v2.py       # 두번째 yolo train 
     ├── yolo_opencv.py         # YOLO 모델 테스트용 파일
     └── labeling.py            # 데이터 자동 라벨링 도구
+```
