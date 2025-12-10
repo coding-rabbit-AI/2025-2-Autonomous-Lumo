@@ -19,7 +19,7 @@ def run_training():
                 torch.cuda.manual_seed_all(seed)
             
             # YOLOv5n 모델 로드
-            model = YOLO("yolov5nu.pt") # YOLOv5s 사전학습 모델 사용
+            model = YOLO("yolov5nu.pt") # YOLOvnu 사전학습 모델 사용
             
             # 모델 학습
             train_results = model.train(

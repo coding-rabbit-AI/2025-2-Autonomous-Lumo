@@ -1,6 +1,6 @@
 # 데이터 경로 (절대 경로 or 상대 경로)
-train: C:\Users\sungb\Documents\lumo\2025-2-Autonomous-Lumo\Yolov5\traffic_images\train\images
-val: C:\Users\sungb\Documents\lumo\2025-2-Autonomous-Lumo\Yolov5\traffic_images\val\images
+train: C:\Users\sungb\Documents\lumo\2025-2-Autonomous-Lumo\Yolov5\clean_traiffic_images\train\images
+val: C:\Users\sungb\Documents\lumo\2025-2-Autonomous-Lumo\Yolov5\clean_traiffic_images\val\images
 
 # 클래스 개수
 nc: 7
