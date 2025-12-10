@@ -1,6 +1,8 @@
 from ultralytics import YOLO
 import torch
-
+#############################################
+# 다중 시드로 YOLOv5s 모델 학습 스크립트
+#############################################
 def run_training():
     # 학습할 시드 목록
     SEEDS = [1] 

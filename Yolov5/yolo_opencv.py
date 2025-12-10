@@ -3,6 +3,10 @@ from ultralytics import YOLO
 import time
 import argparse
 
+###########################################
+# 욜로 모델 테스트용 스크립트
+# 학습한 모델로 웹캠 또는 동영상에서 실시간 탐지 수행
+###########################################
 def test_yolo():
     # 1. 설정 파싱
     parser = argparse.ArgumentParser()
@@ -12,11 +16,11 @@ def test_yolo():
     opt = parser.parse_args()
 
     # 2. 모델 로드
-    print(f"🔥 모델 로딩 중: {opt.weights}...")
+    print(f" 모델 로딩 중: {opt.weights}...")
     try:
         model = YOLO(opt.weights)
     except Exception as e:
-        print(f"❌ 모델 로드 실패! 파일이 있는지 확인하세요. 에러: {e}")
+        print(f"모델 로드 실패! 파일이 있는지 확인하세요. 에러: {e}")
         return
 
     # 3. 입력 소스 설정 (웹캠 or 동영상)
@@ -26,7 +30,7 @@ def test_yolo():
     
     cap = cv2.VideoCapture(source)
     if not cap.isOpened():
-        print(f"❌ 카메라/영상을 열 수 없습니다: {source}")
+        print(f"카메라/영상을 열 수 없습니다: {source}")
         return
 
     # 젯슨 나노용 해상도 조절 (웹캠일 때만)
@@ -34,7 +38,7 @@ def test_yolo():
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-    print(f"🎥 YOLO 탐지 테스트 시작! (종료: 'q')")
+    print(f"YOLO 탐지 테스트 시작 (종료: 'q')")
 
     # FPS 계산용 변수
     prev_time = 0
@@ -51,7 +55,7 @@ def test_yolo():
         # conf: 확신도 설정, imgsz: 입력 이미지 크기 (작을수록 빠름)
         results = model.predict(frame, conf=opt.conf, imgsz=320, verbose=False)
         
-        # 결과 그리기 (YOLO가 알아서 박스랑 이름 다 그려줍니다)
+        # 결과 그리기 
         annotated_frame = results[0].plot()
 
         # ------------------------------------------------------

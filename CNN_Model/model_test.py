@@ -1,3 +1,8 @@
+############################################
+# 새로운 데이터셋에 대한 평가 스크립트
+############################################
+
+
 import torch
 import numpy as np
 import os
@@ -10,6 +15,7 @@ import torchvision.transforms as transforms
 from model import SteeringModel
 from utils import SteeringDataset
 import config
+
 
 MODEL_PATH = "train/exp2/best_model.pth"      # 학습된 모델 경로
 NEW_TEST_CSV = "test_dataset_1000/labels.csv"     # 새로운 데이터의 정답(라벨) 파일

@@ -4,9 +4,10 @@ import os
 import numpy as np
 from tqdm import tqdm
 
-# ==========================================
-# [설정 구역] 여기에 경로를 맞춰주세요!
-# ==========================================
+#################################
+# YOLO를 이용한 데이터 라벨링 자동화 스크립트
+################################
+
 IMAGE_DIR = "C:\\Users\\sungb\\Downloads\\251123_traffic-images\\traffic_images\\train\\images"    # 라벨링할 사진 폴더
 LABEL_DIR = "C:\\Users\\sungb\\Downloads\\251123_traffic-images\\traffic_images\\train\\labels"       # 라벨 저장할 폴더
 CONF_THRES = 0.5                   # 정확도 50% 이상만 인정
@@ -57,7 +58,7 @@ def run_auto_labeling():
     os.makedirs(LABEL_DIR, exist_ok=True)
 
     # 1. 고성능 모델 로드 (yolov5x)
-    print("⏳ AI 라벨링 전문가(YOLOv5x)를 불러오는 중... (시간이 좀 걸립니다)")
+    print("라벨링")
     model = torch.hub.load('ultralytics/yolov5', 'yolov5x', pretrained=True)
     
     # COCO 클래스 기준: 0(사람), 9(신호등), 11(정지표지판)
@@ -65,7 +66,7 @@ def run_auto_labeling():
 
     # 이미지 목록 가져오기
     image_files = [f for f in os.listdir(IMAGE_DIR) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
-    print(f"🚀 총 {len(image_files)}장 처리 시작!")
+    print(f"총 {len(image_files)}장 처리 시작!")
 
     count = 0
     
@@ -138,8 +139,8 @@ def run_auto_labeling():
         if len(detections) > 0:
             count += 1
 
-    print(f"\n✅ 완료! {count}개 이미지 라벨링 끝.")
-    print(f"👉 'labelImg'를 켜서 확인해보세요. (Speed Limit은 직접 추가해야 함)")
+    print(f"\n 완료! {count}개 이미지 라벨링 끝.")
+    print(f" 'labelImg'를 켜서 확인해보세요. (Speed Limit은 직접 추가해야 함)")
 
 if __name__ == "__main__":
     run_auto_labeling()
